@@ -1,4 +1,4 @@
 export const ItemTypes = {
-  TASK: "task",
-  TASK_CARD: "taskCard",
+  LIST_Card: "listCard",
+  CARD: "card",
 };
