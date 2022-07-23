@@ -1,36 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  cards: [
-    {
-      id: 1,
-      icon: "⭕️",
-      status: "open",
-      title: "Human Interest Form",
-      content: "Fill out human interest distribution form",
-    },
-    {
-      id: 2,
-      icon: "⭕️",
-      status: "done",
-      title: "Purchase present",
-      content: "Get an anniversary gift",
-    },
-    {
-      id: 3,
-      icon: "⭕️",
-      status: "in review",
-      title: "Invest in investments",
-      content: "Call the bank to talk about investments",
-    },
-    {
-      id: 4,
-      icon: "⭕️",
-      status: "in progress",
-      title: "Daily reading",
-      content: "Finish reading Intro to UI/UX",
-    },
-  ],
+  cards: [],
 };
 
 export const cardSlice = createSlice({
@@ -41,10 +12,10 @@ export const cardSlice = createSlice({
       state.cards = [...state.cards, action.payload];
     },
     setCards: (state, action) => {
-      const { item, status } = action.payload;
+      const { item, listName } = action.payload;
       state.cards = state.cards
         .filter((i) => i.id !== item.id)
-        .concat({ ...item, status });
+        .concat({ ...item, listName });
     },
   },
 });
