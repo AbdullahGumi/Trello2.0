@@ -6,12 +6,14 @@ app.use(express.json());
 
 //routes
 const cardsRouter = require("./routes/cards");
+const listCardsRouter = require("./routes/listCard");
 
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
 });
 
 app.use("/api/cards", cardsRouter);
+app.use("/api/listCards", listCardsRouter);
 
 const start = async () => {
   const port = 3000;
