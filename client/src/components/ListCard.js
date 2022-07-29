@@ -1,15 +1,13 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { add, close, closeRed } from "../assets";
 import Card from "./Card";
 import { ItemTypes } from "../Constants";
 import { useDrop } from "react-dnd";
 import { useDispatch, useSelector } from "react-redux";
-import { addCardToList, selectCards } from "../features/cardSlice";
-import { v4 as uuidv4 } from "uuid";
-import { removeList } from "../features/listCardSlice";
+import { addNewCard, fetchCards, selectCards } from "../features/cardSlice";
+import { deleteSingleList } from "../features/listCardSlice";
 
-const ListCard = ({ onDrop, listDetails: { listName, id } }) => {
-  console.log(id);
+const ListCard = ({ onDrop, listDetails: { listName, _id } }) => {
   const [isTextFieldOpened, setTextFieldOpened] = useState(false);
   const [cardText, setCardText] = useState("");
   const ref = useRef(null);
@@ -30,18 +28,22 @@ const ListCard = ({ onDrop, listDetails: { listName, id } }) => {
       setCardText("");
       setTextFieldOpened(false);
       dispatch(
-        addCardToList({
-          id: uuidv4(),
+        addNewCard({
           listName,
-          title: cardText,
+          content: cardText,
         })
       );
     }
   };
 
   const deleteList = () => {
-    dispatch(removeList(id));
+    dispatch(deleteSingleList(_id));
   };
+
+  useEffect(() => {
+    //fetch only cards specific to list
+    dispatch(fetchCards());
+  }, []);
 
   return (
     <div
@@ -62,8 +64,8 @@ const ListCard = ({ onDrop, listDetails: { listName, id } }) => {
       <div className="flex flex-col space-y-3 h-full w-full overflow-y-auto px-1">
         {cards
           .filter((item) => item.listName === listName)
-          .map((item, i) => (
-            <Card key={item.id} item={item} listName={listName} />
+          .map((item) => (
+            <Card key={item._id} item={item} listName={listName} />
           ))}
         {isTextFieldOpened && (
           <input

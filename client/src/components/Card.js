@@ -24,7 +24,7 @@ const Card = ({ item }) => {
         isDragging ? "opacity-0" : "opacity-100"
       }`}
     >
-      {item.title}
+      {item.content}
     </div>
   );
 };

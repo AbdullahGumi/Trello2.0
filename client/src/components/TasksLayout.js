@@ -1,10 +1,15 @@
-import { add, close } from "../assets";
+import { useEffect, useRef, useState } from "react";
 import ListCard from "./ListCard";
+import { add, close } from "../assets";
+
+//redux
 import { useDispatch, useSelector } from "react-redux";
-import { setCards } from "../features/cardSlice";
-import { addNewList, selectListCards } from "../features/listCardSlice";
-import { v4 as uuidv4 } from "uuid";
-import { useRef, useState } from "react";
+import { moveCardToAnotherList } from "../features/cardSlice";
+import {
+  addListCard,
+  fetchListCards,
+  selectListCards,
+} from "../features/listCardSlice";
 
 const TasksLayout = () => {
   const dispatch = useDispatch();
@@ -16,15 +21,14 @@ const TasksLayout = () => {
 
   const onDrop = (cardItem, listName) => {
     const { item } = cardItem;
-    dispatch(setCards({ item, listName }));
+    dispatch(moveCardToAnotherList({ item, listName }));
   };
 
   const addList = () => {
     if (newListTitle) {
       setNewListTitle("");
       setIsAddListOpened(false);
-
-      dispatch(addNewList({ id: uuidv4(), listName: newListTitle }));
+      dispatch(addListCard({ listName: newListTitle }));
     }
   };
 
@@ -33,6 +37,10 @@ const TasksLayout = () => {
       return <ListCard key={i} onDrop={onDrop} listDetails={details} />;
     });
   };
+
+  useEffect(() => {
+    dispatch(fetchListCards());
+  }, []);
 
   return (
     <div className="flex space-x-3 overflow-x-auto flex-1 p-5">
