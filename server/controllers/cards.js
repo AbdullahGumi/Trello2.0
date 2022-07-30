@@ -26,8 +26,8 @@ const deleteCard = async (req, res) => {
 
 const updateCard = async (req, res) => {
   const { id } = req.params;
-  const updatedCard = req.body;
-  const card = await Card.findByIdAndUpdate(id, updatedCard, { new: true });
+  const { updatedDetails } = req.body;
+  const card = await Card.findByIdAndUpdate(id, updatedDetails, { new: true });
   res.status(StatusCodes.OK).json({ card });
 };
 

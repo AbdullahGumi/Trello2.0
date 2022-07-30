@@ -30,7 +30,7 @@ const ListCard = ({ onDrop, listDetails: { listName, _id } }) => {
       dispatch(
         addNewCard({
           listName,
-          content: cardText,
+          title: cardText,
         })
       );
     }

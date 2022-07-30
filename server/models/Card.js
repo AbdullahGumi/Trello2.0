@@ -6,9 +6,12 @@ const CardSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    content: {
+    title: {
       type: String,
       required: true,
+    },
+    description: {
+      type: String,
     },
   },
   { timestamps: true }

@@ -47,6 +47,18 @@ export const moveCardToAnotherList = createAsyncThunk(
   }
 );
 
+export const updateCardDetails = createAsyncThunk(
+  "cards/updateCardDetails",
+  async (updatedDetails, thunkAPI) => {
+    const response = await axios.put(
+      `${process.env.REACT_APP_API_ENDPOINT}/cards/${updatedDetails._id}`,
+      { updatedDetails }
+    );
+    thunkAPI.dispatch(updateCard(response.data.card));
+    return response.data.card;
+  }
+);
+
 // export const deleteSingleCard = createAsyncThunk(
 //   "cards/deleteSingleCard",
 //   async (data, thunkAPI) => {
@@ -69,19 +81,29 @@ export const cardSlice = createSlice({
     addCardToList: (state, action) => {
       state.cards = [...state.cards, action.payload];
     },
-
     moveCard: (state, action) => {
       const { item, listName } = action.payload;
       state.cards = state.cards
         .filter((i) => i._id !== item._id)
         .concat({ ...item, listName });
     },
+    updateCard: (state, action) => {
+      const item = action.payload;
+      state.cards = state.cards.map((card) =>
+        card._id === item._id ? item : card
+      );
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { addCardToList, removeFromList, moveCard, loadCards } =
-  cardSlice.actions;
+export const {
+  addCardToList,
+  removeFromList,
+  moveCard,
+  loadCards,
+  updateCard,
+} = cardSlice.actions;
 
 export const selectCards = (state) => state.card.cards;
 
