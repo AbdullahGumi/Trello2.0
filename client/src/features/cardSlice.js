@@ -59,17 +59,16 @@ export const updateCardDetails = createAsyncThunk(
   }
 );
 
-// export const deleteSingleCard = createAsyncThunk(
-//   "cards/deleteSingleCard",
-//   async (data, thunkAPI) => {
-//     const response = await axios.delete(
-//       `${process.env.REACT_APP_API_ENDPOINT}/cards/${data}`
-//     );
-//     console.log(response.data.card);
-//     thunkAPI.dispatch(removeList(response.data.card));
-//     return response.data.card;
-//   }
-// );
+export const deleteSingleCard = createAsyncThunk(
+  "cards/deleteSingleCard",
+  async (id, thunkAPI) => {
+    const response = await axios.delete(
+      `${process.env.REACT_APP_API_ENDPOINT}/cards/${id}`
+    );
+    thunkAPI.dispatch(deleteCard(response.data.card));
+    return response.data.card;
+  }
+);
 
 export const cardSlice = createSlice({
   name: "card",
@@ -93,6 +92,11 @@ export const cardSlice = createSlice({
         card._id === item._id ? item : card
       );
     },
+    deleteCard: (state, action) => {
+      state.cards = state.cards.filter(
+        (list) => list._id !== action.payload._id
+      );
+    },
   },
 });
 
@@ -103,6 +107,7 @@ export const {
   moveCard,
   loadCards,
   updateCard,
+  deleteCard,
 } = cardSlice.actions;
 
 export const selectCards = (state) => state.card.cards;

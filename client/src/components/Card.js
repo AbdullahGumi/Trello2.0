@@ -6,7 +6,7 @@ import dayjs from "dayjs";
 import { useDrag, useDrop } from "react-dnd";
 import { closeSlate } from "../assets";
 import { useDispatch } from "react-redux";
-import { updateCardDetails } from "../features/cardSlice";
+import { deleteSingleCard, updateCardDetails } from "../features/cardSlice";
 
 const Card = ({ item }) => {
   const [modalIsOpen, setIsOpen] = useState(false);
@@ -44,6 +44,10 @@ const Card = ({ item }) => {
 
   const updateDescription = () => {
     dispatch(updateCardDetails({ ...item, description }));
+  };
+
+  const deleteCard = () => {
+    dispatch(deleteSingleCard(item._id));
   };
 
   return (
@@ -114,6 +118,10 @@ const Card = ({ item }) => {
                 autoFocus
                 className={` text-slate-800 font-semibold text-lg flex-1 bg-transparent px-2 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600 rounded-sm`}
                 value={description}
+                onBlur={() => {
+                  updateDescription();
+                  setEditingDesc(false);
+                }}
                 onChange={(e) => setDescription(e.target.value)}
               />
             )}
@@ -152,7 +160,10 @@ const Card = ({ item }) => {
               </span>
             </div>
           </div>
-          <span className="self-end mt-auto text-red-500 hover:cursor-pointer hover:bg-red-300 p-1 rounded-sm">
+          <span
+            onClick={deleteCard}
+            className="self-end mt-auto text-red-500 hover:cursor-pointer hover:bg-red-300 p-1 rounded-sm"
+          >
             Delete
           </span>
         </div>
