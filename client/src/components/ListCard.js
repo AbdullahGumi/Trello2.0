@@ -5,11 +5,12 @@ import { ItemTypes } from "../Constants";
 import { useDrop } from "react-dnd";
 import { useDispatch, useSelector } from "react-redux";
 import { addNewCard, fetchCards, selectCards } from "../features/cardSlice";
-import { deleteSingleList } from "../features/listCardSlice";
+import { changeListName, deleteSingleList } from "../features/listCardSlice";
 
 const ListCard = ({ onDrop, listDetails: { listName, _id } }) => {
   const [isTextFieldOpened, setTextFieldOpened] = useState(false);
-  const [cardText, setCardText] = useState("");
+  const [cardTitle, setCardTitle] = useState("");
+  const [newListTitle, setNewListTitle] = useState(listName);
   const ref = useRef(null);
   const dispatch = useDispatch();
   const cards = useSelector((state) => selectCards(state));
@@ -24,13 +25,13 @@ const ListCard = ({ onDrop, listDetails: { listName, _id } }) => {
   }));
 
   const addCard = () => {
-    if (cardText) {
-      setCardText("");
+    if (cardTitle) {
+      setCardTitle("");
       setTextFieldOpened(false);
       dispatch(
         addNewCard({
           listName,
-          title: cardText,
+          title: cardTitle,
         })
       );
     }
@@ -40,20 +41,29 @@ const ListCard = ({ onDrop, listDetails: { listName, _id } }) => {
     dispatch(deleteSingleList(_id));
   };
 
+  const updateListTitle = () => {
+    dispatch(
+      changeListName({ newListTitle, previousListTitle: listName, _id })
+    );
+  };
+
   useEffect(() => {
     //fetch only cards specific to list
     dispatch(fetchCards());
-  }, []);
+  }, [listName]);
 
   return (
     <div
       ref={drop}
       className="flex flex-col bg-[#EBECF0] w-[272px] p-2 py-3 rounded-md max-h-[80%] h-fit space-y-2 flex-shrink-0"
     >
-      <div className="flex justify-between items-center">
-        <span className="font-semibold text-sm text-slate-800 px-2">
-          {listName}
-        </span>
+      <div className="flex justify-between items-center space-x-2">
+        <input
+          value={newListTitle}
+          className="flex-1 rounded-sm font-semibold text-sm text-slate-800 px-2 bg-transparent focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600"
+          onChange={(e) => setNewListTitle(e.target.value)}
+          onBlur={() => updateListTitle()}
+        />
         <img
           onClick={deleteList}
           src={closeRed}
@@ -72,8 +82,8 @@ const ListCard = ({ onDrop, listDetails: { listName, _id } }) => {
             ref={ref}
             autoFocus
             onKeyPress={(e) => e.key === "Enter" && addCard()}
-            onChange={(e) => setCardText(e.target.value)}
-            value={cardText}
+            onChange={(e) => setCardTitle(e.target.value)}
+            value={cardTitle}
             type="text"
             className="flex bg-white  p-1 shadow-sm  rounded-sm focus:outline-none"
           />
@@ -84,14 +94,14 @@ const ListCard = ({ onDrop, listDetails: { listName, _id } }) => {
           <span
             onClick={addCard}
             className={`rounded-sm p-1 ${
-              cardText ? "bg-[#0079BF]" : "bg-gray-300"
+              cardTitle ? "bg-[#0079BF]" : "bg-gray-300"
             } text-white hover:cursor-pointer`}
           >
             Add card
           </span>
           <img
             onClick={() => {
-              setCardText("");
+              setCardTitle("");
               setTextFieldOpened(false);
             }}
             src={close}

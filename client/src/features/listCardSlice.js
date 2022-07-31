@@ -34,8 +34,21 @@ export const deleteSingleList = createAsyncThunk(
     const response = await axios.delete(
       `${process.env.REACT_APP_API_ENDPOINT}/listCards/${data}`
     );
-    console.log(response.data.card);
     thunkAPI.dispatch(removeList(response.data.card));
+    return response.data.card;
+  }
+);
+
+export const changeListName = createAsyncThunk(
+  "listCards/changeListName",
+  async (newListName, thunkAPI) => {
+    const { newListTitle, previousListTitle, _id } = newListName;
+    console.log("_id", _id);
+    const response = await axios.put(
+      `${process.env.REACT_APP_API_ENDPOINT}/listCards/${_id}`,
+      { newListTitle, previousListTitle }
+    );
+    thunkAPI.dispatch(changeListDetails(response.data.card));
     return response.data.card;
   }
 );
@@ -50,6 +63,12 @@ export const listCardSlice = createSlice({
     addNewList: (state, action) => {
       state.listCards = [...state.listCards, action.payload];
     },
+    changeListDetails: (state, action) => {
+      const item = action.payload;
+      state.listCards = state.listCards.map((listCard) =>
+        listCard._id === item._id ? item : listCard
+      );
+    },
     removeList: (state, action) => {
       state.listCards = state.listCards.filter(
         (list) => list._id !== action.payload._id
@@ -58,7 +77,8 @@ export const listCardSlice = createSlice({
   },
 });
 
-export const { addNewList, removeList, loadLists } = listCardSlice.actions;
+export const { addNewList, removeList, loadLists, changeListDetails } =
+  listCardSlice.actions;
 
 export const selectListCards = (state) => state.listCard.listCards;
 

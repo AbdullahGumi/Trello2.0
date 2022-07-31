@@ -37,9 +37,10 @@ export const moveCardToAnotherList = createAsyncThunk(
       item: { _id },
       listName,
     } = data;
+
     const response = await axios.put(
       `${process.env.REACT_APP_API_ENDPOINT}/cards/${_id}`,
-      { listName }
+      { updatedDetails: { listName } }
     );
 
     thunkAPI.dispatch(moveCard({ item: response.data.card, listName }));

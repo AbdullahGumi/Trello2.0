@@ -18,7 +18,7 @@ app.use("/api/cards", cardsRouter);
 app.use("/api/listCards", listCardsRouter);
 
 const start = async () => {
-  const port = 3000;
+  const port = process.env.PORT || 3000;
 
   try {
     app.listen(port, () => {
