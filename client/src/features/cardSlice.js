@@ -10,9 +10,7 @@ export const fetchCards = createAsyncThunk(
   async (_, thunkAPI) => {
     //fetch only cards specific to list
 
-    const response = await axios.get(
-      `${process.env.REACT_APP_API_ENDPOINT}/cards`
-    );
+    const response = await axios.get(`/api/cards`);
     thunkAPI.dispatch(loadCards(response.data.cards));
     return response.data.cards;
   }
@@ -21,10 +19,7 @@ export const fetchCards = createAsyncThunk(
 export const addNewCard = createAsyncThunk(
   "cards/addNewCard",
   async (data, thunkAPI) => {
-    const response = await axios.post(
-      `${process.env.REACT_APP_API_ENDPOINT}/cards`,
-      data
-    );
+    const response = await axios.post(`/api/cards`, data);
     thunkAPI.dispatch(addCardToList(response.data.newCard));
     return response.data.newCard;
   }
@@ -38,10 +33,9 @@ export const moveCardToAnotherList = createAsyncThunk(
       listName,
     } = data;
 
-    const response = await axios.put(
-      `${process.env.REACT_APP_API_ENDPOINT}/cards/${_id}`,
-      { updatedDetails: { listName } }
-    );
+    const response = await axios.put(`/api/cards/${_id}`, {
+      updatedDetails: { listName },
+    });
 
     thunkAPI.dispatch(moveCard({ item: response.data.card, listName }));
     return response.data.card;
@@ -51,10 +45,9 @@ export const moveCardToAnotherList = createAsyncThunk(
 export const updateCardDetails = createAsyncThunk(
   "cards/updateCardDetails",
   async (updatedDetails, thunkAPI) => {
-    const response = await axios.put(
-      `${process.env.REACT_APP_API_ENDPOINT}/cards/${updatedDetails._id}`,
-      { updatedDetails }
-    );
+    const response = await axios.put(`/api/cards/${updatedDetails._id}`, {
+      updatedDetails,
+    });
     thunkAPI.dispatch(updateCard(response.data.card));
     return response.data.card;
   }
@@ -63,9 +56,7 @@ export const updateCardDetails = createAsyncThunk(
 export const deleteSingleCard = createAsyncThunk(
   "cards/deleteSingleCard",
   async (id, thunkAPI) => {
-    const response = await axios.delete(
-      `${process.env.REACT_APP_API_ENDPOINT}/cards/${id}`
-    );
+    const response = await axios.delete(`/api/cards/${id}`);
     thunkAPI.dispatch(deleteCard(response.data.card));
     return response.data.card;
   }

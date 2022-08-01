@@ -8,10 +8,7 @@ const initialState = {
 export const addListCard = createAsyncThunk(
   "listCards/addListCard",
   async (data, thunkAPI) => {
-    const response = await axios.post(
-      `${process.env.REACT_APP_API_ENDPOINT}/listCards`,
-      data
-    );
+    const response = await axios.post(`/api/listCards`, data);
     thunkAPI.dispatch(addNewList(response.data.newListCard));
     return response.data.newListCard;
   }
@@ -20,9 +17,7 @@ export const addListCard = createAsyncThunk(
 export const fetchListCards = createAsyncThunk(
   "listCards/fetchListCards",
   async (_, thunkAPI) => {
-    const response = await axios.get(
-      `${process.env.REACT_APP_API_ENDPOINT}/listCards`
-    );
+    const response = await axios.get(`/api/listCards`);
     thunkAPI.dispatch(loadLists(response.data.listCards));
     return response.data.listCards;
   }
@@ -31,9 +26,7 @@ export const fetchListCards = createAsyncThunk(
 export const deleteSingleList = createAsyncThunk(
   "listCards/deleteSingleList",
   async (data, thunkAPI) => {
-    const response = await axios.delete(
-      `${process.env.REACT_APP_API_ENDPOINT}/listCards/${data}`
-    );
+    const response = await axios.delete(`/api/listCards/${data}`);
     thunkAPI.dispatch(removeList(response.data.card));
     return response.data.card;
   }
@@ -44,10 +37,10 @@ export const changeListName = createAsyncThunk(
   async (newListName, thunkAPI) => {
     const { newListTitle, previousListTitle, _id } = newListName;
     console.log("_id", _id);
-    const response = await axios.put(
-      `${process.env.REACT_APP_API_ENDPOINT}/listCards/${_id}`,
-      { newListTitle, previousListTitle }
-    );
+    const response = await axios.put(`/api/listCards/${_id}`, {
+      newListTitle,
+      previousListTitle,
+    });
     thunkAPI.dispatch(changeListDetails(response.data.card));
     return response.data.card;
   }

@@ -9,16 +9,19 @@ app.use(cors());
 //routes
 const cardsRouter = require("./routes/cards");
 const listCardsRouter = require("./routes/listCard");
+const path = require("path");
+
+app.use(express.static(path.join(__dirname, "build")));
 
 app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/index.html");
+  res.sendFile(path.join(__dirname + "/build/index.html"));
 });
 
 app.use("/api/cards", cardsRouter);
 app.use("/api/listCards", listCardsRouter);
 
 const start = async () => {
-  const port = process.env.PORT || 3000;
+  const port = process.env.PORT || 5000;
 
   try {
     app.listen(port, () => {
