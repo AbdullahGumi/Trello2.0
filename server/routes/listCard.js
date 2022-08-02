@@ -7,7 +7,7 @@ const {
   getAllListCards,
   deleteListCard,
   updateListCard,
-} = require("../controllers/listcards");
+} = require("../controllers/listCards");
 
 router.route("/").post(createListCard).get(getAllListCards);
 
