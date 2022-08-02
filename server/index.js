@@ -4,7 +4,7 @@ const express = require("express");
 const connectDB = require("./db/connect");
 //routes
 const cardsRouter = require("./routes/cards");
-const listCardsRouter = require("./routes/listCard");
+// const listCardsRouter = require("./routes/listCard");
 const app = express();
 app.use(express.json());
 app.use(cors());
@@ -17,7 +17,7 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname + "/build/index.html"));
 });
 
-// app.use("/api/cards", cardsRouter);
+app.use("/api/cards", cardsRouter);
 // app.use("/api/listCards", listCardsRouter);
 
 const start = async () => {
