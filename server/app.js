@@ -7,8 +7,8 @@ app.use(express.json());
 app.use(cors());
 
 //routes
-const cardsRouter = require("./routes/cards");
-const listCardsRouter = require("./routes/listCard");
+// const cardsRouter = require("./routes/cards");
+// const listCardsRouter = require("./routes/listCard");
 const path = require("path");
 
 app.use(express.static(path.join(__dirname, "build")));
