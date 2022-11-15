@@ -1,4 +1,3 @@
-import React from "react";
 import { trello } from "../assets";
 
 const Header = () => {

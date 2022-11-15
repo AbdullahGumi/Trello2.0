@@ -13,7 +13,7 @@ const EditCardModal = ({ item, modalIsOpen, setIsOpen }) => {
 
   const dispatch = useDispatch();
 
-  const descriptionRef = useRef(null);
+  const descriptionRef = useRef<any>(null);
 
   const updateTitle = () => {
     dispatch(updateCardDetails({ ...item, title }));

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { add, close, closeRed } from "../assets";
 import Card from "./Card";
 import { ItemTypes } from "../Constants";
@@ -11,10 +11,10 @@ const ListCard = ({ onDrop, listDetails: { listName, _id } }) => {
   const [isTextFieldOpened, setTextFieldOpened] = useState(false);
   const [cardTitle, setCardTitle] = useState("");
   const [newListTitle, setNewListTitle] = useState(listName);
-  const ref = useRef(null);
+  const ref = useRef<any>(null);
   const dispatch = useDispatch();
   const cards = useSelector((state) => selectCards(state));
-  const [{ isOver }, drop] = useDrop(() => ({
+  const [_, drop] = useDrop(() => ({
     accept: ItemTypes.CARD,
     drop: (item) => {
       onDrop(item, listName);
@@ -75,7 +75,11 @@ const ListCard = ({ onDrop, listDetails: { listName, _id } }) => {
         {cards
           .filter((item) => item.listName === listName)
           .map((item) => (
-            <Card key={item._id} item={item} listName={listName} />
+            <Card
+              key={item._id}
+              item={item}
+              // listName={listName}
+            />
           ))}
         {isTextFieldOpened && (
           <input

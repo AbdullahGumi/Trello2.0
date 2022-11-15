@@ -14,7 +14,7 @@ import {
 const TasksLayout = () => {
   const dispatch = useDispatch();
   const listCards = useSelector((state) => selectListCards(state));
-  const listTitleRef = useRef(null);
+  const listTitleRef = useRef<any>(null);
 
   const [newListTitle, setNewListTitle] = useState("");
   const [isAddListOpened, setIsAddListOpened] = useState(false);
