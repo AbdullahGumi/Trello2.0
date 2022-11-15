@@ -1,2 +1,7 @@
-# Fullstack trello clone built with (MERN)
-backend is under development 
+# Fullstack (MERN) trello clone 
+## built with:
+### • react-dnd
+### • redux
+### • tailwindcss
+### • express
+### • mongoDB
