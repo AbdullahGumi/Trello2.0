@@ -1,5 +1,5 @@
-import axios from "axios";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import api from "../api";
 
 const initialState = {
   cards: [],
@@ -10,7 +10,7 @@ export const fetchCards = createAsyncThunk(
   async (_, thunkAPI) => {
     //fetch only cards specific to list
 
-    const response = await axios.get(`/api/cards`);
+    const response = await api.get(`/api/cards`);
     thunkAPI.dispatch(loadCards(response.data.cards));
     return response.data.cards;
   }
@@ -19,7 +19,7 @@ export const fetchCards = createAsyncThunk(
 export const addNewCard = createAsyncThunk(
   "cards/addNewCard",
   async (data, thunkAPI) => {
-    const response = await axios.post(`/api/cards`, data);
+    const response = await api.post(`/api/cards`, data);
     thunkAPI.dispatch(addCardToList(response.data.newCard));
     return response.data.newCard;
   }
@@ -33,7 +33,7 @@ export const moveCardToAnotherList = createAsyncThunk(
       listName,
     } = data;
 
-    const response = await axios.put(`/api/cards/${_id}`, {
+    const response = await api.put(`/api/cards/${_id}`, {
       updatedDetails: { listName },
     });
 
@@ -45,7 +45,7 @@ export const moveCardToAnotherList = createAsyncThunk(
 export const updateCardDetails = createAsyncThunk(
   "cards/updateCardDetails",
   async (updatedDetails, thunkAPI) => {
-    const response = await axios.put(`/api/cards/${updatedDetails._id}`, {
+    const response = await api.put(`/api/cards/${updatedDetails._id}`, {
       updatedDetails,
     });
     thunkAPI.dispatch(updateCard(response.data.card));
@@ -56,7 +56,7 @@ export const updateCardDetails = createAsyncThunk(
 export const deleteSingleCard = createAsyncThunk(
   "cards/deleteSingleCard",
   async (id, thunkAPI) => {
-    const response = await axios.delete(`/api/cards/${id}`);
+    const response = await api.delete(`/api/cards/${id}`);
     thunkAPI.dispatch(deleteCard(response.data.card));
     return response.data.card;
   }
